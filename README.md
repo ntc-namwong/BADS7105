@@ -2,7 +2,7 @@
 
 - [ ] Homework 01 - Analysis of Customer Behavior
 
-- [ ] Homework 02 - Job to be done
+- [x] Homework 02 - Job to be done
 
 - [ ] Homework 03 - Value Proposition
 

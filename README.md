@@ -2,9 +2,9 @@
 
 - [ ] Homework 01 - Analysis of Customer Behavior
 
-- [x] Homework 02 - Job to be done
+- [x] [Homework 02 - Job to be done](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2002)
 
-- [ ] Homework 03 - Value Proposition
+- [x] [Homework 03 - Value Proposition](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003)
 
 - [ ] Homework 04 - Customer Journey
 

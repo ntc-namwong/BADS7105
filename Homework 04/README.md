@@ -1,7 +1,9 @@
 # Customer Journey
 
+This is an example of customer journey for buying electric piano.
+
 ## Customer Journey Map
-![](https://user-images.githubusercontent.com/77780721/117546265-c4797380-b053-11eb-92da-e9e20937f0d2.png)
+![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2004/Picture%204-1%20Customer%20Journey.png)
 
 ## Customer Journey Map with Data Analytics
-![](https://user-images.githubusercontent.com/77780721/117546293-ebd04080-b053-11eb-8154-506f51b5553b.png)
+![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2004/Picture%204-2%20Customer%20Journey%20with%20Data%20Analytics%20to%20Improve%20the%20Journey.png)

@@ -1,23 +1,25 @@
 # BADS7105 - CRM Analytics and Intelligence
 
-- [ ] Homework 01 - Analysis of Customer Behavior
+- [ ] [Homework 01 - Analysis of Customer Behavior](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2001)
 
 - [x] [Homework 02 - Job to be done](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2002)
 
 - [x] [Homework 03 - Value Proposition](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003)
 
-- [ ] Homework 04 - Customer Journey
+- [x] [Homework 04 - Customer Journey](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2004)
 
-- [ ] Homework 05 - CLV Dashboard
+- [x] [Homework 05 - CLV Dashboard](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2005)
 
-- [ ] Homework 06 - Customer Segmentation
+- [ ] [Homework 06 - Customer Segmentation](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2006)
 
-- [ ] Homework 07 - Product Recommendation
+- [ ] [Homework 07 - Product Recommendation](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2007)
 
-- [ ] Homework 08 - Campaign Response Model
+- [ ] [Homework 08 - Campaign Response Model](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2008)
 
-- [ ] Homework 09 - A/B Testing
+- [ ] [Homework 09 - A/B Testing](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2009)
 
-- [ ] Homework 10 - Customer Movement Analysis
+- [ ] [Homework 10 - Customer Movement Analysis](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2010)
 
-- [ ] Homework 11 - Voice of Customers
+- [ ] [Homework 11 - Voice of Customers](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2011)
+
+- [ ] [Homework 12 - Design Thinking](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2012)

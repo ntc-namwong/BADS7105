@@ -1,6 +1,6 @@
 # Customer Segmentation
 
-This study aims to segment customers from Supermarket dataset. First is to query data from Google BigQuery. The queried data is then aggreated to create K-Mean clustering model using Python coding via Google Colab.
+This study aims to segment customers from Supermarket dataset. First is to query data from Google BigQuery. The queried data is then aggreated to create K-Mean clustering model using Python coding via Google Colab. [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ntc-namwong/BADS7105/blob/main/Homework%2006/Homework%206.ipynb)
 
 ## Import Data from Google BigQuery
 
@@ -33,9 +33,9 @@ SELECT
     WHEN SUM(CASE WHEN S.BASKET_SIZE='S' THEN 1 ELSE 0 END) >= SUM(CASE WHEN S.BASKET_SIZE='M' THEN 1 ELSE 0 END)
      AND SUM(CASE WHEN S.BASKET_SIZE='S' THEN 1 ELSE 0 END) >= SUM(CASE WHEN S.BASKET_SIZE='L' THEN 1 ELSE 0 END) THEN 1
     END AS MODE_BASKET_SIZE,
+    DATE_DIFF(PARSE_DATE('%Y%m%d', CAST(MAX(S.SHOP_DATE) AS STRING)), PARSE_DATE('%Y%m%d', CAST(MIN(S.SHOP_DATE) AS STRING)), DAY) AS CUST_LIFETIME,
     DATE_DIFF(DATE'2008-07-06', PARSE_DATE('%Y%m%d', CAST(MIN(S.SHOP_DATE) AS STRING)), DAY) AS DURATION_FROM_FIRST_PURCHASE,
-    DATE_DIFF(DATE'2008-07-06', PARSE_DATE('%Y%m%d', CAST(MAX(S.SHOP_DATE) AS STRING)), DAY) AS DURATION_FROM_LAST_PURCHASE,
-    DATE_DIFF(PARSE_DATE('%Y%m%d', CAST(MAX(S.SHOP_DATE) AS STRING)), PARSE_DATE('%Y%m%d', CAST(MIN(S.SHOP_DATE) AS STRING)), DAY) AS CUST_LIFETIME
+    DATE_DIFF(DATE'2008-07-06', PARSE_DATE('%Y%m%d', CAST(MAX(S.SHOP_DATE) AS STRING)), DAY) AS DURATION_FROM_LAST_PURCHASE
 FROM
     `nida-bads-7105.supermarket.supermarket-data` AS S
 INNER JOIN (
@@ -74,16 +74,17 @@ Regarding all features queried from Google BigQuery, some features are self corr
 
 ## Clustering Model
 
-To select how many cluster should be used for the supermarket dataset, Elbow method is applied. From the pictures below, 3-cluster (K=3) is selected even it is not best number for Silhouette test.
+To select how many cluster should be used for the supermarket dataset, Elbow method and Silhouette is applied. From the pictures below, 3-cluster (K=3) is selected because the more number of clusters, the less Silhouette.
 
-
+![Picture 6-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2006/Picture%206-1%20Clustering%20Model.jpg)
 
 ## Clustering Analysis
 
 This step is to analyze which feature is importance and how each cluster behaves.
 
-### Importance Feature
+### Feature Importance
 
+![Picture 6-2](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2006/Picture%206-2%20Feature%20Importance.jpg)
 
 It is found that top 5 the most importance features are
 - CUST_LIFETIME
@@ -93,16 +94,8 @@ It is found that top 5 the most importance features are
 - AVG_MONTHLY_VISIT
 
 ### Exploratory Data Analysis
-- TOTAL_SPEND
-- AVG_MONTHLY_SPEND
-- STD_MONTLY_SPEND
-- TOTAL_VISIT
-- AVG_MONTHLY_VISIT
-- STD_MONTLY_VISIT
-- MODE_BASKET_SIZE
-- DURATION_FROM_FIRST_PURCHASE
-- DURATION_FROM_LAST_PURCHASE
-- CUST_LIFETIME
+
+![Picture 6-3](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2006/Picture%206-3%20Exploratory%20Data%20Analysis.jpg)
 
 ## Interpretation
 

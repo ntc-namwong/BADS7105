@@ -2,6 +2,8 @@
 
 Based on a day in life data from BADS7105 students, activity for each person always changes along the day. Visualization below summarizes BADS7105 students activities as well as gain and pain points.
 
+## Result Summary
+
 ![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2003/Picture%203-1%20Activities%20in%20a%20Day%20Life.gif)
 
 > 00:00 AM - 05:30 AM : Sleeeping
@@ -108,3 +110,40 @@ Based on a day in life data from BADS7105 students, activity for each person alw
   - Sometime, homework make us dispondent.
   - It is very lazy, but homework has still not finished.
 
+## Step-by-step Approach
+
+In this study, there are 4 main steps, including survey combination, labeling, data preparation, and finally visualization. All steps are done by 3 softwares below:
+- Google Colab [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ntc-namwong/BADS7105/blob/main/Homework%2003/Homework%203.ipynb) 
+- Microsoft Excel [![](https://img.shields.io/badge/-Open%20In%20MS%20Excel-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Activities.xlsx)
+- Microsoft Power BI [![](https://img.shields.io/badge/-Open%20In%20MS%20Power%20BI-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Homework%203.pbix)
+
+### Survey Combination
+
+Due to the BADS7105 students' activities survey raw data have been uploaded separately, it is required to sum up all the files together in order to easy to proceed in next step.
+
+In this step, python coding in Colab has been used. By using glob library to browse Activities files, the Excel files are read by using library pandas and appended to new dataframe.
+
+```python
+import glob
+import pandas as pd
+
+df = pd.DataFrame()
+
+for f in glob.glob('Raw Data/Activities_*xlsx'):
+    data = pd.read_excel(f)
+    data['File'] = f
+    df = df.append(data, ignore_index = True)
+
+for f in glob.glob('Raw Data/Activities_*xls'):
+    data = pd.read_excel(f)
+    data['File'] = f
+    df = df.append(data, ignore_index = True)
+
+df.to_excel('Combined_File.xlsx')
+```
+
+### Labeling
+
+Purpose of this step is to label activities with some keywords. This is because the detail activites are diverse but they can be grouped into some keywords. For example, whether "ทำงาน", "เริ่มงาน" or "ทำงานต่อ", all of these can be described be wording "Work".
+
+As of now, this step has been done manually in Microsoft Excel. This is room to improvement for this study because there might be some library in python to do text analytics and grouping long words into key words.

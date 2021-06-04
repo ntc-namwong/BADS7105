@@ -114,8 +114,8 @@ Based on a day in life data from BADS7105 students, activity for each person alw
 
 In this study, there are 4 main steps, including survey combination, labeling, data preparation, and finally visualization. All steps are done by 3 softwares below:
 - Google Colab [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ntc-namwong/BADS7105/blob/main/Homework%2003/Homework%203.ipynb) 
-- Microsoft Excel [![](https://img.shields.io/badge/-Open%20In%20MS%20Excel-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Activities.xlsx)
-- Microsoft Power BI [![](https://img.shields.io/badge/-Open%20In%20MS%20Power%20BI-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Homework%203.pbix)
+- Microsoft Excel [![](https://img.shields.io/badge/-Link%20MS%20Excel-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Activities.xlsx)
+- Microsoft Power BI [![](https://img.shields.io/badge/-Link%20MS%20Power%20BI-blue)](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2003/Homework%203.pbix)
 
 ### Survey Combination
 
@@ -147,3 +147,91 @@ df.to_excel('Combined_File.xlsx')
 Purpose of this step is to label activities with some keywords. This is because the detail activites are diverse but they can be grouped into some keywords. For example, whether "ทำงาน", "เริ่มงาน" or "ทำงานต่อ", all of these can be described be wording "Work".
 
 As of now, this step has been done manually in Microsoft Excel. This is room to improvement for this study because there might be some library in python to do text analytics and grouping long words into key words.
+
+### Data Preparation
+
+In this step, python coding is applied to create 4 tables using in Power BI.
+
+> Scatter Plot Coordination Table
+
+On the right handside of the dashboard, it is designed to be circle which contains multiple points of activities on the circumference and traveling activity on the center. Trigonometry is easiest way to create the coordinate on the circumference. Sine function represents y-axis and cosine function represents x-axis.
+
+From activities data, the unque activity has been looped to generate coordinate around the circumference. Finally, traveling activity is appended to the dataframe with coordinate (0,0) because it is normal to move from one activity to another activity by traveling.
+
+```python
+import numpy as np
+import pandas as pd
+
+data = []
+df = pd.read_excel('Activities.xlsx')
+
+r = 5
+X = lambda i, a: 0 if a == 'Traveling' else round(r*np.cos(np.pi/2 - i*(2*np.pi)/(len(df['Label'].unique())-1)), 3)
+Y = lambda i, a: 0 if a == 'Traveling' else round(r*np.sin(np.pi/2 - i*(2*np.pi)/(len(df['Label'].unique())-1)), 3)
+
+for i, a in enumerate(np.sort(np.delete(df['Label'].unique(), np.where(df['Label'].unique() == 'Traveling'), axis=0))):
+    data.append([a, X(i, a), Y(i, a)])
+
+data.append(['Traveling', 0, 0])    
+df_coordinate = pd.DataFrame(data, columns = ['Activity', 'X', 'Y']).set_index('Activity')
+
+df_coordinate.to_excel('Coordinate.xlsx')
+```
+
+> Timeline Activity Table
+
+Main problem in this step is that starting time for each student is not the same. While someone wakes up before 6AM, the other one wakes up after 7AM. While someone sleep before 10PM, the other one still does homework and sleep after midnight.
+
+Indexing in python is very useful in this step. In case that there is no activity in the early morning time, last activity, which normally is sleeping, is used to represent those period.
+
+Random number is applied to make the dot, which represents student, not overlap. Moreover, this makes feeling of continuous movement for each student at each period of time.
+
+```python
+import random
+import datetime
+
+data = []
+df = pd.read_excel('Activities.xlsx')
+
+for s in df['Student'].unique():
+    df_s = df[df['Student'] == s]
+    for h in range(0, 24):
+        for m in range(0, 60, 15):
+            time_index = [i for i, j in enumerate(df[df['Student'] == s]['Time']) if j <= datetime.time(h, m)]
+            time_index = -1 if not time_index else max(time_index)
+            data.append([s,                                                    # Student
+                         datetime.time(h, m),                                  # Time
+                         df_s.iloc[time_index, df.columns.get_loc('Label')],   # Activity
+                         df_s.iloc[time_index, df.columns.get_loc('Pain')],    # Pain
+                         df_s.iloc[time_index, df.columns.get_loc('Gain')],    # Gain
+                         df_coordinate.loc[df_s.iloc[time_index, df.columns.get_loc('Label')], 'X'] + random.randrange(-220, 220, 1)/1000, # X
+                         df_coordinate.loc[df_s.iloc[time_index, df.columns.get_loc('Label')], 'Y'] + random.randrange(-220, 220, 1)/1000  # Y
+                        ])
+            
+df_timeline = pd.DataFrame(data, columns = ['Student', 'Time', 'Activity', 'Pain', 'Gain', 'X', 'Y'])
+
+df_timeline.to_excel('Timeline.xlsx')
+```
+
+> Top Activity Tables
+
+At the same period of time, all activities have been counted and ranked. Only the top of that particular time will be shown on pain-gain tables on the left handside.
+
+```python
+df_count = df_timeline[['Time', 'Activity', 'Student']].groupby(['Time', 'Activity']).count().reset_index()
+df_count['Percent'] = df_count['Student']/len(df['Student'].unique())*100
+
+df_top = df_count[['Time', 'Student']].groupby(['Time']).max().reset_index()
+df_top = pd.merge(df_top, df_count, on = ['Time', 'Student'])
+df_top = df_top.drop(['Student', 'Percent'], axis = 1).drop_duplicates('Time')
+df_top_pg = pd.merge(df_top, df_timeline[['Time', 'Activity', 'Pain', 'Gain']], on = ['Time', 'Activity'])
+
+df_top.to_excel('TopActivity.xlsx')
+df_top_pg.to_excel('TopPainGain.xlsx')
+```
+
+### Visualization
+
+All above tables are imported to Power BI for visualization purpose. Data schema can be summarized as picture below.
+
+![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2003/Picture%203-2%20Schema.jpg)

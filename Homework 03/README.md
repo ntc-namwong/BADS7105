@@ -139,12 +139,12 @@ for f in glob.glob('Raw Data/Activities_*xls'):
     data['File'] = f
     df = df.append(data, ignore_index = True)
 
-df.to_excel('Combined_File.xlsx')
+df.to_excel('Activites.xlsx')
 ```
 
 ### Labeling
 
-Purpose of this step is to label activities with some keywords. This is because the detail activites are diverse but they can be grouped into some keywords. For example, whether "ทำงาน", "เริ่มงาน" or "ทำงานต่อ", all of these can be described be wording "Work".
+Purpose of this step is to label activities with some keywords. This is because the detail activites are diverse but they can be grouped into some keywords. For example, whether `ทำงาน`, `เริ่มงาน` or `ทำงานต่อ`, all of these can be described be wording `Work`.
 
 As of now, this step has been done manually in Microsoft Excel. This is room to improvement for this study because there might be some library in python to do text analytics and grouping long words into key words.
 
@@ -233,5 +233,11 @@ df_top_pg.to_excel('TopPainGain.xlsx')
 ### Visualization
 
 All above tables are imported to Power BI for visualization purpose. Data schema can be summarized as picture below.
+
+There are 2 primary keys, including Activity in `ActivityCoordinate` table and Time in `ActivityTop` table. Connection is `one-to-many` with `both` cross filter direction.
+
+With drag and drop feature in Power BI, the visualization as in animation above can be created. However, lebel on the circle will show only when there are some student done that activity at that time. So, `OfflineCoordinate` is used as backgroup coordinate which will not update any time.
+
+The remaining is cosmetic work which depends on editor's taste.
 
 ![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2003/Picture%203-2%20Schema.jpg)

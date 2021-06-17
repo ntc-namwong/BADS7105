@@ -43,3 +43,4 @@ ORDER BY report_month
 
 SQL result can be vitualized as picture below.
 
+![Picture 10-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2010/Picture%2010-1%20Customer%20Movement%20Analysis.jpg)

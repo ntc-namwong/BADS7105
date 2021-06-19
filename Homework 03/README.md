@@ -4,7 +4,7 @@ Based on a day in life data from BADS7105 students, activity for each person alw
 
 ## Result Summary
 
-![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2003/Picture%203-1%20Activities%20in%20a%20Day%20Life.gif)
+![Picture 3-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2003/Picture%203-1%20Activities%20in%20a%20Day%20Life.gif)
 
 > 00:00 AM - 05:30 AM : Sleeeping
 - ***Context***

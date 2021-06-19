@@ -2,15 +2,13 @@
 
 This is a survey in BADS7105 class asking students the interests and consumptions for serveral activites, such as food, cosmetic, game and so on. Even the sample size is not large enough to represent the population in Thailand or in the world, I can get some insights which will be described below.
 
-This study is divided into 2 main parts, including technical part and analytic part.
+Below will descibed how to pre-process and analyze the customer behavior data by using Python.
 
-## Technical Part
-
-This part will descibed how to pre-process and analyze the customer behavior data by using Python.
+## Data Preparation
 
 First of all, let's start with importing essential libraries.
 
-```javascript
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,16 +16,14 @@ import matplotlib.pyplot as plt
 
 Before pre-processing, it is neccessary to know the data first. Since I know that the first column is response timestamp which is meaningless in this analysis, so the first column is neglect.
 
-```javascript
+```python
 df = pd.read_excel('Customer Behaviors (Responses).xlsx')
 df = df[df.columns[1:]]
-
-df.head()
 ```
 
 It is obvious that there are long texts for both column name and response data. For more clear understanding, these long texts are replaced.
 
-```javascript
+```python
 # rename columns
 intr_col = [c.replace('คุณมีความสนใจในสิ่งเหล่านี้มากน้อยเพียงใด', 'Interest') for c in df.columns if 'คุณมีความสนใจในสิ่งเหล่านี้มากน้อยเพียงใด' in c]
 cons_col = [c.replace('คุณบริโภคสิ่งเหล่านี้บ่อยขนาดไหน', 'Consumption') for c in df.columns if 'คุณบริโภคสิ่งเหล่านี้บ่อยขนาดไหน' in c]
@@ -45,7 +41,7 @@ Moreover, some date of birth are in Buddhist calendar (B.E.), some are in Anno D
 
 I found an issue when using to_datetime function to convert the calendar year because the maximum datetime for this function is at April 11<sup>th</sup>, 2262. Therefore, what I have done is to split date of birth into 3 columns, including year (Y), month (M) and date (D). After apply a calculation to convert B.E. to A.D., all 3 columns are concatenated together again and finally converted to datetime format using to_datetime function.
 
-```javascript
+```python
 df['Y'] = df['Date of Birth'].apply(lambda x: int(str(x).split()[0].split('-')[0])).apply(lambda x: x if x < 2500 else x - 543)
 df['M'] = df['Date of Birth'].apply(lambda x: int(str(x).split()[0].split('-')[1]))
 df['D'] = df['Date of Birth'].apply(lambda x: int(str(x).split()[0].split('-')[2]))
@@ -55,11 +51,11 @@ df['Date of Birth'] = pd.to_datetime(df['Y'].astype(str) + '-'+ df['M'].astype(s
 
 This study plans to use 3 attributes, including gender, age and zodiac, for finding correlation and seeing the insights. Thus, age and zodiac have to be established.
 
-```javascript
+```python
 df['Age'] = df['Date of Birth'].dt.year.apply(lambda x: 2021 - x if x < 2020 else np.nan)
 ```
 
-```javascript
+```python
 def zodiac(df):
     if (df['D'] >= 15 and df['M'] == 1) or (df['D'] < 13 and df['M'] == 2):
         return 'Capricon'        
@@ -88,3 +84,68 @@ def zodiac(df):
 
 df['Zodiac'] = df.apply(zodiac, axis = 1)
 ```
+
+Last but not least, unused columns are dropped before proceed next step.
+
+```python
+df.drop(['Y', 'M', 'D'], axis = 1, inplace = True)
+df.dropna(inplace = True)
+```
+
+The result of all above steps is pivot-type table. Unfortunately, some of visualizations requires unpivot-type table. So, few steps below are used to prepare unpivot table.
+
+```python
+survey_index = dict(zip(intr_col + cons_col, range(len(intr_col + cons_col))))
+
+df_unpivoted = df[intr_col + cons_col + ['Gender', 'Age', 'Zodiac']].melt(id_vars = ['Gender', 'Age', 'Zodiac'], var_name = 'Survey', value_name = 'Score')
+df_unpivoted['Survey Index'] = df_unpivoted['Survey'].map(survey_index)
+df_unpivoted['Zodiac Index'] = df_unpivoted['Zodiac'].map(zodiac_index)
+df_unpivoted.sort_values(['Survey Index', 'Zodiac Index'], ascending = [True, True], inplace = True)
+df_unpivoted.drop(['Survey Index', 'Zodiac Index'], axis = 1, inplace = True)
+```
+
+## EDA
+
+### Demographic
+
+Demographics of surveyees are shown in picture below. It can be seen that BADS7105 female students are around half of all students. Most of all student are between 25-30 years old. Moreover, some of zodiacs shows imbalance distribution such as Aquarius, Taurus, Pisces, Libra, Leo and Gemini.
+
+![Picture 1-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2001/Picture%201-1%20Demographic.jpg)
+
+To create above visualization, it can be done by using below codes.
+
+```python
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (15, 4))
+```
+
+```python
+# Demographic by Gender
+ax1.set_title('Demographic by Gender')
+ax1.bar(df['Gender'].unique(), df['Gender'].value_counts(), color = ['tab:blue', 'lightpink'])
+ax1.set_xlabel('Gender')
+ax1.set_ylabel('Count')
+```
+
+```python
+# Demographic by Age
+ax2.set_title('Demographic by Age')
+ax2.hist([df[df['Gender'] == 'M']['Age'], df[df['Gender'] == 'F']['Age']], bins = 15, rwidth = 0.9, stacked = True, color = ['tab:blue', 'lightpink'])
+ax2.yaxis.set_major_locator(MaxNLocator(integer = True))
+ax2.set_xlabel('Age')
+ax2.set_ylabel('Frequency')
+```
+
+```python
+# Demographic by Zodiac
+ax3.set_title('Demographic by Zodiac')
+df_zodiac = pd.DataFrame([[x, y, df[df['Zodiac'] == x][df['Gender'] == y]['Age'].count()] for _, x in enumerate(df['Zodiac'].unique()) for _, y in enumerate(df[df['Zodiac'] == x]['Gender'].unique())], columns = ['Zodiac','Gender','Count']).sort_values(['Zodiac', 'Gender'])
+ax3.pie(df_zodiac['Count'], colors = ['lightpink', 'tab:blue'] * 10, radius = 0.7, wedgeprops = dict(width = 0.05), startangle = 90)
+ax3.set_prop_cycle('color', [plt.get_cmap('bone')(x / len(df_zodiac['Zodiac'].unique())) for x, _ in enumerate(df_zodiac['Zodiac'].unique())])
+_, _, autotexts = ax3.pie(df_zodiac.groupby(['Zodiac']).sum()['Count'], labels = df_zodiac['Zodiac'].unique(), wedgeprops = dict(width = 0.3), startangle = 90, autopct = lambda x: '{:,.0f}'.format(x * df_zodiac['Count'].sum() / 100), pctdistance = 0.85)
+[autotext.set_color('white') for autotext in autotexts]
+```
+
+```python
+plt.show()
+```
+

@@ -1,6 +1,6 @@
 # Job to be done
 
-![](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2002/Picture%202-1%20Job%20to%20be%20done.jpg)
+![Picture 2-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2002/Picture%202-1%20Job%20to%20be%20done.jpg)
 
 ## Job Statement
 > To enjoy learning BADS7105 from my home

@@ -1,6 +1,6 @@
 # BADS7105 - CRM Analytics and Intelligence
 
-- [ ] [Homework 01 - Analysis of Customer Behavior](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2001)
+- [x] [Homework 01 - Analysis of Customer Behavior](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2001)
 
 - [x] [Homework 02 - Job to be done](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2002)
 

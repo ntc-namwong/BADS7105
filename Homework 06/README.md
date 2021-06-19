@@ -86,7 +86,7 @@ This step is to analyze which feature is importance and how each cluster behaves
 
 ![Picture 6-2](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2006/Picture%206-2%20Feature%20Importance.jpg)
 
-It is found that top 5 the most importance features are
+It is found that top 5 important features are
 - CUST_LIFETIME
 - DURATION_FROM_LAST_PURCHASE
 - STD_MONTHLY_SPEND

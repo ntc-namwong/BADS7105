@@ -22,4 +22,4 @@
 
 - [x] [Homework 11 - Voice of Customers](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2011)
 
-- [ ] [Homework 12 - Design Thinking](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2012)
+- [x] [Homework 12 - Design Thinking](https://github.com/ntc-namwong/BADS7105/tree/main/Homework%2012)

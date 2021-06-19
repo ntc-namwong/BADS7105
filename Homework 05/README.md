@@ -2,7 +2,7 @@
 
 This study aims to create CLV dashboard for supermarket dataset. Customer Lifetime Value (CLV) can be calculated from 4 parameters as equation below:
 
-![formula](http://latex.codecogs.com/svg.latex?CLV%3DT%5Ctimes%20AOV%5Ctimes%20AGM%5Ctimes%20ALT)
+![](http://latex.codecogs.com/svg.latex?CLV%3DT%5Ctimes%20AOV%5Ctimes%20AGM%5Ctimes%20ALT)
 
 - Average number of transaction per month (T)
 - Average order value (AOV)

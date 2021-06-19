@@ -2,7 +2,7 @@
 
 ## Data Preparation
 
-This study has been done by using SQL script below.
+This study has been done by using below SQL script.
 
 ```SQL
 WITH cust_month AS (

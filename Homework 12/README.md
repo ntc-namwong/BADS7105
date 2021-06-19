@@ -10,7 +10,7 @@ Her need is to have something or someone to help her cleaning floor. Now, she us
 
 ## Ideate
 
-- Cleaning robot with some intelligence by integrated with IoT
+- Cleaning robot with some intelligence by integrating with IoT
 - Hiring housekeeper instead
 - Coating the floor with some materials to reduce dist on the floor
 

@@ -11,7 +11,9 @@ First of all, let's start with importing essential libraries.
 ```python
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 ```
 
 Before pre-processing, it is neccessary to know the data first. Since I know that the first column is response timestamp which is meaningless in this analysis, so the first column is neglect.
@@ -108,7 +110,7 @@ df_unpivoted.drop(['Survey Index', 'Zodiac Index'], axis = 1, inplace = True)
 
 ### Demographic
 
-Demographics of surveyees are shown in picture below. It can be seen that BADS7105 female students are around half of all students. Most of all student are between 25-30 years old. Moreover, some of zodiacs shows imbalance distribution such as Aquarius, Taurus, Pisces, Libra, Leo and Gemini.
+Demographics of surveyees are shown in picture below. It can be seen that BADS7105 female students are around half of all students. Most of all student are between 25-30 years old. Moreover, some of zodiacs shows imbalance distribution such as Aquarius, Pisces, Taurus, Gemini, Leo and Libra.
 
 ![Picture 1-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2001/Picture%201-1%20Demographic.jpg)
 
@@ -149,3 +151,56 @@ _, _, autotexts = ax3.pie(df_zodiac.groupby(['Zodiac']).sum()['Count'], labels =
 plt.show()
 ```
 
+### Box Plots
+
+Some interesting insights can be extracted from this survey.
+  - Male perfers play game than female. Moreover, Cancer, Leo and Sagittarius are the real gamers.
+  - From the zodiac box plot, it seems like Gemini is interesting in art and beauty. However, there is a bias in this survey because Gemini has only female.
+  - Overall, it seems like both male and female interested in healthy food. However, when consider in zodiac's point of view, it is found that Capricon, Aquarius, Taurus, Leo and Virgo are interested in and consume healthy food.
+
+![Picture 1-2](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2001/Picture%201-2%20Box%20Plot%20by%20Age.jpg)
+![Picture 1-3](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2001/Picture%201-3%20Box%20Plot%20by%20Zodiac.jpg)
+
+```python
+# Box Plot by Gender
+plt.subplots(1, 2, figsize = (15, 15), tight_layout = True)
+
+plt.subplot(1, 2, 1)
+sns.boxplot(x = 'Score', y = 'Survey', hue = 'Gender', data = df_unpivoted[df_unpivoted['Survey'].isin(intr_col)], palette = {'M':'tab:blue', 'F':'lightpink'})
+plt.gca().axes.axvline(x = 4, color = 'lightgray', alpha = 0.5, linestyle = '--')
+plt.legend(loc = 'upper left')
+plt.gca().axes.set_xlabel('')
+plt.gca().axes.set_ylabel('')
+
+plt.subplot(1, 2, 2)
+sns.boxplot(x = 'Score', y = 'Survey', hue = 'Gender', data = df_unpivoted[df_unpivoted['Survey'].isin(cons_col)], palette = {'M':'tab:blue', 'F':'lightpink'})
+plt.gca().axes.axvline(x = 3.5, color = 'lightgray', alpha = 0.5, linestyle = '--')
+plt.gca().axes.get_legend().remove()
+plt.gca().axes.yaxis.tick_right()
+plt.gca().axes.set_xlabel('')
+plt.gca().axes.set_ylabel('')
+
+plt.show()
+```
+
+```python
+# Box Plot by Zodiac
+plt.subplots(1, 2, figsize = (15, 45), tight_layout = True)
+
+plt.subplot(1, 2, 1)
+sns.boxplot(x = 'Score', y = 'Survey', hue = 'Zodiac', data = df_unpivoted[df_unpivoted['Survey'].isin(intr_col)])
+plt.gca().axes.axvline(x = 4, color = 'lightgray', alpha = 0.5, linestyle = '--')
+plt.legend(loc = 'upper left')
+plt.gca().axes.set_xlabel('')
+plt.gca().axes.set_ylabel('')
+
+plt.subplot(1, 2, 2)
+sns.boxplot(x = 'Score', y = 'Survey', hue = 'Zodiac', data = df_unpivoted[df_unpivoted['Survey'].isin(cons_col)])
+plt.gca().axes.axvline(x = 3.5, color = 'lightgray', alpha = 0.5, linestyle = '--')
+plt.gca().axes.get_legend().remove()
+plt.gca().axes.yaxis.tick_right()
+plt.gca().axes.set_xlabel('')
+plt.gca().axes.set_ylabel('')
+
+plt.show()
+```

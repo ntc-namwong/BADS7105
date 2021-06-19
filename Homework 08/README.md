@@ -21,6 +21,6 @@ The features from previous step are used to train XGBoost model and resampling b
 
 ## Model Performance
 
-The best model is XGBoost + oversampled with test-auc score 0.715.
+The best model is XGBoost + oversampled with the result of test-auc score 0.715.
 
 ![Picture 8-1](https://github.com/ntc-namwong/BADS7105/blob/main/Homework%2008/Picture%208-1%20ROC%20Oversampling.jpg)
